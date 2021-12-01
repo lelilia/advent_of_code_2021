@@ -19,3 +19,13 @@ for i in range(1, len(list)-2):
 print(count_2)
 
 
+# one function solution
+def get_increase_count(sequence, window_size=1):
+    count_increase = 0
+    for i in range(len(sequence) - window_size ):
+        if sequence[i] < sequence[i + window_size]:
+            count_increase += 1
+    return count_increase
+
+print("Part 1:\t", get_increase_count(list))
+print("Part 2:\t", get_increase_count(list, 3))
