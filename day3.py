@@ -62,3 +62,23 @@ while len(co2) > 1 and i < len(input[0]):
 
 
 print("Part 2:\t", int(ox[0], 2) * int(co2[0],2))
+
+
+# second attempt
+from statistics import mode
+import numpy as np
+
+matrix = np.loadtxt("testinput3.txt", dtype=str)
+matrix = np.array([ list(binary_string) for binary_string in matrix])
+
+def get_gamma(matrix):
+    gamma = "".join([mode(matrix[:, i]) for i in range(matrix[0].size)])
+    return int(gamma, 2)
+
+print(get_gamma(matrix))
+gamma = get_gamma(matrix)
+print(~gamma)
+print(15 ^ gamma)
+
+test = "{0:b}".format(~23)
+print(test)
