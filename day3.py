@@ -1,6 +1,7 @@
 with open("input3.txt") as f:
     input = f.readlines()
 
+
 def find_most_common(input, index):
     entry = [a[index] for a in input]
     one = entry.count("1")
@@ -21,7 +22,7 @@ for i in range(len(input[0])):
         gamma += str(most_common)
         epsilon += str((most_common + 1) % 2)
 
-print ("Part 1:\t", int(gamma, 2) * int(epsilon, 2))
+print("Part 1:\t", int(gamma, 2) * int(epsilon, 2))
 
 
 ox = input.copy()
@@ -39,7 +40,6 @@ while len(ox) > 1 and i < len(input[0]):
         break
 
     i += 1
-
 
 
 co2 = input.copy()
@@ -61,7 +61,7 @@ while len(co2) > 1 and i < len(input[0]):
     i += 1
 
 
-print("Part 2:\t", int(ox[0], 2) * int(co2[0],2))
+print("Part 2:\t", int(ox[0], 2) * int(co2[0], 2))
 
 
 # second attempt
@@ -69,11 +69,13 @@ from statistics import mode
 import numpy as np
 
 matrix = np.loadtxt("testinput3.txt", dtype=str)
-matrix = np.array([ list(binary_string) for binary_string in matrix])
+matrix = np.array([list(binary_string) for binary_string in matrix])
+
 
 def get_gamma(matrix):
     gamma = "".join([mode(matrix[:, i]) for i in range(matrix[0].size)])
     return int(gamma, 2)
+
 
 print(get_gamma(matrix))
 gamma = get_gamma(matrix)

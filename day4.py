@@ -7,16 +7,16 @@ with open(INPUT_FILE) as f:
     input = f.read()
 
 
-class Board():
+class Board:
     def __init__(self, string):
         self.board = np.fromstring(string, dtype=int, sep=" ")
-        self.board.resize((5,5))
+        self.board.resize((5, 5))
         self.seen = []
 
     def check_number(self, number):
         result = np.where(self.board == number)
         if len(result[0]) > 0:
-            self.board[result[0][0],result[1][0]] = 10000
+            self.board[result[0][0], result[1][0]] = 10000
 
     def check_win(self):
         return self.check_win_row() or self.check_win_col()
@@ -36,7 +36,8 @@ class Board():
     def sum(self):
         return self.board.sum()
 
-class Boards():
+
+class Boards:
     def __init__(self, input):
         self.numbers = None
         self.boards = []
@@ -53,6 +54,7 @@ class Boards():
             self.boards.append(b)
             b.check_number(1)
 
+
 class BoardsPart1(Boards):
     def __init__(self, input):
         super().__init__(input)
@@ -66,6 +68,7 @@ class BoardsPart1(Boards):
                 if board.check_win():
                     print("Part 1:\t", int(number) * (board.sum() % 10000))
                     return
+
 
 class BoardsPart2(Boards):
     def __init__(self, input):
