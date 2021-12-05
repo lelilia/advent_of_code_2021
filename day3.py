@@ -80,9 +80,9 @@ def get_int(string):
     return int(string, 2)
 
 
-def get_string(matrix):
-    """return the string for the first row in the matrix"""
-    return "".join([str(x) for x in matrix])
+def get_string(array):
+    """return the string for the array"""
+    return "".join([str(x) for x in array])
 
 
 def get_gamma_and_epsilon(matrix):
