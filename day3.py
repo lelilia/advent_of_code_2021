@@ -60,7 +60,10 @@ while len(co2) > 1 and i < len(input[0]):
 
     i += 1
 
-
+print(int(ox[0], 2))
+print(int(co2[0], 2))
+print(ox[0])
+print(co2[0])
 print("Part 2:\t", int(ox[0], 2) * int(co2[0], 2))
 
 
