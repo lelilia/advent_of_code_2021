@@ -60,30 +60,57 @@ while len(co2) > 1 and i < len(input[0]):
 
     i += 1
 
-print(int(ox[0], 2))
-print(int(co2[0], 2))
-print(ox[0])
-print(co2[0])
 print("Part 2:\t", int(ox[0], 2) * int(co2[0], 2))
 
+print("------")
+print()
 
 # second attempt
 from statistics import mode
 import numpy as np
 
-matrix = np.loadtxt("testinput3.txt", dtype=str)
-matrix = np.array([list(binary_string) for binary_string in matrix])
+INPUT_FILE = "input3.txt"
+
+matrix = np.loadtxt(INPUT_FILE, dtype=str)
+matrix = np.array([list(binary_string) for binary_string in matrix]).astype(int)
 
 
-def get_gamma(matrix):
-    gamma = "".join([mode(matrix[:, i]) for i in range(matrix[0].size)])
-    return int(gamma, 2)
+def get_int(string):
+    """return the int value of a binary string"""
+    return int(string, 2)
 
 
-print(get_gamma(matrix))
-gamma = get_gamma(matrix)
-print(~gamma)
-print(15 ^ gamma)
+def get_string(matrix):
+    """return the string for the first row in the matrix"""
+    return "".join([str(x) for x in matrix])
 
-test = "{0:b}".format(~23)
-print(test)
+
+def get_gamma_and_epsilon(matrix):
+    gamma = [mode(matrix[:, i]) for i in range(matrix[0].size)]
+    gamma = get_string(gamma)
+    string_length = len(gamma)
+    gamma = get_int(gamma)
+    epsilon = 2 ** string_length - 1 - gamma
+    return gamma, epsilon
+
+
+def get_reduced(matrix_original, bias):
+    matrix = matrix_original.copy()
+    number_of_columns = matrix[0].size
+    for i in range(number_of_columns):
+        matrix_length = len(matrix)
+        mode = sum(matrix[:, i]) / matrix_length * 2 // 1
+        if matrix_length > 1:
+            matrix = matrix[matrix[:, i] == (mode + bias) % 2]
+    co2_string = get_string(matrix[0])
+    return get_int(co2_string)
+
+
+gamma, epsilon = get_gamma_and_epsilon(matrix)
+
+print("Part 1:\t", gamma * epsilon)
+
+oxygen = get_reduced(matrix, 0)
+co2 = get_reduced(matrix, 1)
+
+print("Part 2:\t", oxygen * co2)
