@@ -58,8 +58,6 @@ class Boards:
             number = self.numbers.pop(0)
             for board in self.boards:
                 board.set_number(number)
-
-            for board in self.boards:
                 if board.check_win():
                     self.winners.append(number * (board.sum() % 10000))
                     self.boards.remove(board)
