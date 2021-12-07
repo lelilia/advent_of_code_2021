@@ -13,14 +13,7 @@ def get_increasing_fuel(pos, target_pos):
     return sum(range(1, abs(pos - target_pos) + 1))
 
 
-def get_sum_fuel(positions, metric):
-    if metric == "median":
-        return get_median_sum_fuel(positions)
-    if metric == "avg":
-        return get_avg_sum_fuel(positions)
-
-
-def get_avg_sum_fuel(positions):
+def get_sum_fuel_part2(positions):
     avg = int(np.average(positions))
     fuel = 0
     for pos in positions:
@@ -28,7 +21,7 @@ def get_avg_sum_fuel(positions):
     return fuel
 
 
-def get_median_sum_fuel(positions):
+def get_sum_fuel_part1(positions):
     median = int(np.median(positions))
     fuel = 0
     for pos in positions:
@@ -42,11 +35,10 @@ def read_input(file_name):
 
 if __name__ == "__main__":
     positions = read_input(INPUT_FILE)
-    # positions = np.array([1, 2, 3, 100, 9, 10])
 
-    print("Part 1:\t", get_sum_fuel(positions, "median"))
+    print("Part 1:\t", get_sum_fuel_part1(positions))
 
-    print("Part 2:\t", get_sum_fuel(positions, "avg"))
+    print("Part 2:\t", get_sum_fuel_part2(positions))
 
     exit()
     # very messy first attempt
