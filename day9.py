@@ -1,7 +1,7 @@
 import numpy as np
 
 
-INPUT_FILE = "testinput9.txt"
+INPUT_FILE = "input9.txt"
 
 input = np.loadtxt(INPUT_FILE, dtype=str)
 y = np.array([[a for a in b] for b in input]).astype(int)
