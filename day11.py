@@ -48,6 +48,3 @@ while True:
     if len(np.where(flashed == 0)[0]) == 0:
         print("Part 2:\t", step)
         break
-
-
-

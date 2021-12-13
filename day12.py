@@ -2,7 +2,8 @@
 
 INPUT_FILE = "input12.txt"
 
-class Cave():
+
+class Cave:
     def __init__(self, a, b):
         self.name = a
         self.neighbours = [b]
@@ -14,6 +15,7 @@ class Cave():
 
     def is_small_cave(self):
         return self.name.islower()
+
 
 with open(INPUT_FILE) as f:
     input_text = f.readlines()
@@ -44,8 +46,6 @@ while len(q) > 0:
         continue
     for n in curr.neighbours:
         q.append([caves[n], path + [curr.name]])
-
-
 
 
 print()
