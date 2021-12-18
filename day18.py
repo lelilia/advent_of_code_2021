@@ -16,13 +16,18 @@ class Tree:
 
     def __add__(self, other):
         new_root = Tree()
-        right = Tree(other, new_root)
-        left = self
-        left.parent = new_root
-        new_root.left = left
-        new_root.right = right
+        self.parent = new_root
+        new_root.left = self
+        other.parent = new_root
+        new_root.right = other
         new_root.reduce()
         return new_root
+
+    def __radd__(self, other):
+        if other == 0:
+            return self
+        else:
+            return self.__add__(other)
 
     def tree_list(self):
         if self.value != None:
@@ -32,39 +37,45 @@ class Tree:
             right = self.right.tree_list()
             return [left, right]
 
+    def get_next_left_neighbour(self):
+        next_left = self.parent
+        old_value = self
+        while next_left and next_left.left == old_value:
+            old_value = next_left
+            next_left = next_left.parent
+        if next_left:
+            next_left = next_left.left
+        while next_left and next_left.right:
+            next_left = next_left.right
+        return next_left
+
+    def get_next_right_neighbour(self):
+        next_right = self.parent
+        old_value = self
+        while next_right and next_right.right == old_value:
+            old_value = next_right
+            next_right = next_right.parent
+        if next_right:
+            next_right = next_right.right
+        while next_right and next_right.left:
+            next_right = next_right.left
+        return next_right
+
     def explode(self, depth):
         if self.left:
             if depth == 4 and not self.left.left and not self.right.left:
-                left_neighbour = self.parent
-                old_value = self
-                while (left_neighbour and left_neighbour.left == old_value):
-                    old_value = left_neighbour
-                    left_neighbour = left_neighbour.parent
-                if left_neighbour:
-                    left_neighbour = left_neighbour.left
-                while left_neighbour and left_neighbour.right:
-                    left_neighbour = left_neighbour.right
-
-                right_neighbour = self.parent
-                old_value = self
-                while (right_neighbour and right_neighbour.right == old_value):
-                    old_value = right_neighbour
-                    right_neighbour = right_neighbour.parent
-                if right_neighbour:
-                    right_neighbour = right_neighbour.right
-                while right_neighbour and right_neighbour.left:
-                    right_neighbour = right_neighbour.left
-
-                if left_neighbour:
-                    left_neighbour.value += self.left.value
-                if right_neighbour:
-                    right_neighbour.value += self.right.value
+                next_left = self.get_next_left_neighbour()
+                next_right = self.get_next_right_neighbour()
+                if next_left:
+                    next_left.value += self.left.value
+                if next_right:
+                    next_right.value += self.right.value
                 self.left = None
                 self.right = None
                 self.value = 0
 
                 return True
-            return self.left.explode(depth + 1) or self.right.explode(depth+1)
+            return self.left.explode(depth + 1) or self.right.explode(depth + 1)
         return False
 
     def split(self):
@@ -95,26 +106,19 @@ if __name__ == "__main__":
     with open("input18.txt") as f:
         data = f.read().strip().split("\n")
 
-    root = Tree(eval(data[0]))
-    for line in data[1:]:
-        root = root + eval(line)
+    trees = [Tree(eval(d)) for d in data]
 
-    print("Part 1:\t", root.magnitude())
+    print("Part 1:\t", sum(trees).magnitude())
 
     maximum_magnitude = 0
-    for i in range(len(data) - 1):
-        for j in range(i + 1, len(data)):
-            r = Tree(eval(data[i]))
-            r += eval(data[j])
-            maximum_magnitude = max(maximum_magnitude, r.magnitude())
-            r = Tree(eval(data[j]))
-            r += eval(data[i])
-            maximum_magnitude = max(maximum_magnitude, root.magnitude())
-    print(maximum_magnitude)
 
-    # for i in range(len(data) - 1):
-    #     for j in range(2):
-    #         root = Tree(eval(data[j % 2]))
-    #         root = root + eval(data[(j+1) % 2])
-    #         maximum_magnitude = max(maximum_magnitude, root.magnitude())
-    # print(maximum_magnitude)
+    for i in range(len(data)):
+        for j in range(len(data)):
+            if i == j:
+                continue
+            t1 = Tree(eval(data[i]))
+            t2 = Tree(eval(data[j]))
+
+            maximum_magnitude = max(maximum_magnitude, (t1 + t2).magnitude())
+
+    print("Part 2:\t", maximum_magnitude)
